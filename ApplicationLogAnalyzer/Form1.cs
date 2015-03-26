@@ -1,4 +1,6 @@
 ﻿using System;
+using System.ComponentModel;
+using System.Runtime.Serialization;
 using System.Windows.Forms;
 using ApplicationLogger;
 
@@ -9,25 +11,56 @@ namespace ApplicationLogAnalyzer
         public Form1()
         {
             InitializeComponent();
+            Logger.OnNewLogItem += Logger_OnNewLogItem;
+        }
 
-
-            openLogFileDialog.FileOk += openLogFileDialog_FileOk;
+        void Logger_OnNewLogItem(LogItem item)
+        {
+            UpdateColumn();
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
-            openLogFileDialog.ShowDialog();
-
+            openLogFileDialog.ShowDialog(this);
         }
 
-        void openLogFileDialog_FileOk(object sender, System.ComponentModel.CancelEventArgs e)
+        private void openLogFileDialog_FileOk_1(object sender, CancelEventArgs e)
         {
-            Logger.Initialize(openLogFileDialog.SafeFileName);
+            Console.WriteLine("Opening file: " + openLogFileDialog.FileName);
         }
 
-        private void openLogFileDialog_FileOk_1(object sender, System.ComponentModel.CancelEventArgs e)
+        private void loadConfig(string configName)
         {
+            try
+            {
+                Logger.Initialize(openLogFileDialog.FileName);
+            }
+            catch (SerializationException exception)
+            {
+                Console.WriteLine("Error");
+                throw;
+            }
+        }
 
+        private void UpdateColumn()
+        {
+            dataGridView1.Rows.Clear();
+            foreach (LogItem item in Logger.Log)
+            {
+                dataGridView1.Rows.Add(new object[3] {item.Level, item.Time, item.Message});
+            }
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            Logger.Initialize();
+
+            Logger.Success("test");
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            Logger.Error("test");
         }
     }
 }

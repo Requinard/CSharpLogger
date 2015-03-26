@@ -1,14 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Linq;
 
 namespace ApplicationLogger
 {
+    public delegate void ItemAdded(LogItem item);
+
     public static class Logger
     {
         private static List<LogItem> log;
+
+        public static event ItemAdded OnNewLogItem;
 
         public static List<LogItem> Log
         {
@@ -30,10 +35,14 @@ namespace ApplicationLogger
             }
             else
             {
-                log = new List<LogItem>();
+                throw new SerializationException("The file does not exist!"); 
             }
         }
 
+        public static void Initialize()
+        {
+            log = new List<LogItem>();
+        }
         /// <summary>
         /// Sorts the log by a specific log Level
         /// </summary>
@@ -49,6 +58,36 @@ namespace ApplicationLogger
             return s.ToList();
         }
 
+        public static List<LogItem> SortLogItemsFromDate(DateTime startDate)
+        {
+            var s = from logItem in log
+                where logItem.Time > startDate
+                orderby logItem.Time descending
+                select logItem;
+
+            return s.ToList();
+        }
+
+        public static List<LogItem> SortLogItemsToDate(DateTime toDate)
+        {
+            var s = from logItem in log
+                where logItem.Time < toDate
+                orderby logItem.Time descending
+                select logItem;
+
+            return s.ToList();
+        }
+
+        public static List<LogItem> SortLogItemsBetweenDate(DateTime startDate, DateTime endDate)
+        {
+            var s = from logItem in log
+                where logItem.Time > startDate
+                where logItem.Time < endDate
+                orderby logItem.Time descending
+                select logItem;
+
+            return s.ToList();
+        }
         /// <summary>
         /// Writes log to hard drive
         /// </summary>
@@ -82,6 +121,8 @@ namespace ApplicationLogger
             log.Add(item);
 
             Console.WriteLine(item.ToString());
+
+            OnNewLogItem(item);
         }
 
         /// <summary>
