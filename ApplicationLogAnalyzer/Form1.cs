@@ -27,6 +27,8 @@ namespace ApplicationLogAnalyzer
         private void openLogFileDialog_FileOk_1(object sender, CancelEventArgs e)
         {
             Console.WriteLine("Opening file: " + openLogFileDialog.FileName);
+
+            loadConfig(openLogFileDialog.FileName);
         }
 
         private void loadConfig(string configName)
@@ -40,6 +42,8 @@ namespace ApplicationLogAnalyzer
                 Console.WriteLine("Error");
                 throw;
             }
+
+            UpdateColumn();
         }
 
         private void UpdateColumn()
@@ -60,7 +64,7 @@ namespace ApplicationLogAnalyzer
 
         private void button3_Click(object sender, EventArgs e)
         {
-            Logger.Error("test");
+            Logger.Destruct("test.file");
         }
     }
 }
