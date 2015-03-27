@@ -14,7 +14,7 @@ namespace ApplicationLogAnalyzer
             Logger.OnNewLogItem += Logger_OnNewLogItem;
         }
 
-        void Logger_OnNewLogItem(LogItem item)
+        private void Logger_OnNewLogItem(LogItem item)
         {
             UpdateColumn();
         }

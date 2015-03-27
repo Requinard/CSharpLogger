@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
-using System.Linq;
 
 namespace ApplicationLogger
 {
@@ -13,15 +13,15 @@ namespace ApplicationLogger
     {
         private static List<LogItem> log;
 
-        public static event ItemAdded OnNewLogItem;
-
         public static List<LogItem> Log
         {
             get { return log; }
         }
 
+        public static event ItemAdded OnNewLogItem;
+
         /// <summary>
-        /// Initializes a logger
+        ///     Initializes a logger
         /// </summary>
         public static void Initialize(string LogFileName)
         {
@@ -30,12 +30,12 @@ namespace ApplicationLogger
                 Stream s = new FileStream(LogFileName, FileMode.Open);
                 var bf = new BinaryFormatter();
 
-                log = (List<LogItem>)bf.Deserialize(s);
+                log = (List<LogItem>) bf.Deserialize(s);
                 s.Close();
             }
             else
             {
-                throw new SerializationException("The file does not exist!"); 
+                throw new SerializationException("The file does not exist!");
             }
         }
 
@@ -43,24 +43,25 @@ namespace ApplicationLogger
         {
             log = new List<LogItem>();
         }
+
         /// <summary>
-        /// Sorts the log by a specific log Level
+        ///     Sorts the log by a specific log Level
         /// </summary>
         /// <param name="level">Level you want sorted</param>
         /// <returns>A list containing all items with the specified log level</returns>
         public static List<LogItem> SortLogItemsByLogLevel(LogLevel level)
         {
-            var s = from logItem in log
-                    where logItem.Level == level
-                    orderby logItem.Time descending
-                    select logItem;
+            IOrderedEnumerable<LogItem> s = from logItem in log
+                where logItem.Level == level
+                orderby logItem.Time descending
+                select logItem;
 
             return s.ToList();
         }
 
         public static List<LogItem> SortLogItemsFromDate(DateTime startDate)
         {
-            var s = from logItem in log
+            IOrderedEnumerable<LogItem> s = from logItem in log
                 where logItem.Time > startDate
                 orderby logItem.Time descending
                 select logItem;
@@ -70,7 +71,7 @@ namespace ApplicationLogger
 
         public static List<LogItem> SortLogItemsToDate(DateTime toDate)
         {
-            var s = from logItem in log
+            IOrderedEnumerable<LogItem> s = from logItem in log
                 where logItem.Time < toDate
                 orderby logItem.Time descending
                 select logItem;
@@ -80,7 +81,7 @@ namespace ApplicationLogger
 
         public static List<LogItem> SortLogItemsBetweenDate(DateTime startDate, DateTime endDate)
         {
-            var s = from logItem in log
+            IOrderedEnumerable<LogItem> s = from logItem in log
                 where logItem.Time > startDate
                 where logItem.Time < endDate
                 orderby logItem.Time descending
@@ -88,8 +89,9 @@ namespace ApplicationLogger
 
             return s.ToList();
         }
+
         /// <summary>
-        /// Writes log to hard drive
+        ///     Writes log to hard drive
         /// </summary>
         public static void Destruct(string LogFileName)
         {
@@ -110,7 +112,7 @@ namespace ApplicationLogger
         }
 
         /// <summary>
-        /// Adds a message to the message log
+        ///     Adds a message to the message log
         /// </summary>
         /// <param name="logMessage">Message that needs to be logged</param>
         /// <param name="level">Severity of the message</param>
@@ -126,7 +128,7 @@ namespace ApplicationLogger
         }
 
         /// <summary>
-        /// Logs an info message
+        ///     Logs an info message
         /// </summary>
         /// <param name="message">Message to be logged</param>
         public static void Info(string message)
@@ -135,7 +137,7 @@ namespace ApplicationLogger
         }
 
         /// <summary>
-        /// Logs a debug message
+        ///     Logs a debug message
         /// </summary>
         /// <param name="message">Message to be logged</param>
         public static void Debug(string message)
@@ -144,7 +146,7 @@ namespace ApplicationLogger
         }
 
         /// <summary>
-        /// Logs a success message
+        ///     Logs a success message
         /// </summary>
         /// <param name="message">Message to be logged</param>
         public static void Success(string message)
@@ -153,7 +155,7 @@ namespace ApplicationLogger
         }
 
         /// <summary>
-        /// Logs a warning message
+        ///     Logs a warning message
         /// </summary>
         /// <param name="message">Message to be logged</param>
         public static void Warning(string message)
@@ -162,7 +164,7 @@ namespace ApplicationLogger
         }
 
         /// <summary>
-        /// Logs an error message
+        ///     Logs an error message
         /// </summary>
         /// <param name="message">Message to be logged</param>
         public static void Error(string message)
@@ -189,7 +191,7 @@ namespace ApplicationLogger
         private readonly DateTime time;
 
         /// <summary>
-        /// Initializes a log item
+        ///     Initializes a log item
         /// </summary>
         /// <param name="message">Message to be saved</param>
         /// <param name="level">Severity of the message</param>
@@ -216,7 +218,7 @@ namespace ApplicationLogger
         }
 
         /// <summary>
-        /// Returns a string of the logmessage
+        ///     Returns a string of the logmessage
         /// </summary>
         /// <returns>String that contains a formatted log</returns>
         public override string ToString()
