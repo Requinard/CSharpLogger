@@ -63,7 +63,7 @@ namespace ApplicationLogger
         {
             IOrderedEnumerable<LogItem> s = from logItem in log
                 where logItem.Time > startDate
-                orderby logItem.Time descending
+                orderby logItem.Time
                 select logItem;
 
             return s.ToList();
