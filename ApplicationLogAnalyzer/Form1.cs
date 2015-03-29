@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
+using System.Runtime.Remoting.Messaging;
 using System.Runtime.Serialization;
 using System.Windows.Forms;
 using ApplicationLogger;
@@ -36,14 +39,13 @@ namespace ApplicationLogAnalyzer
             try
             {
                 Logger.Initialize(openLogFileDialog.FileName);
+                UpdateColumn();
             }
             catch (SerializationException exception)
             {
                 Console.WriteLine("Error");
                 throw;
             }
-
-            UpdateColumn();
         }
 
         private void UpdateColumn()
@@ -55,6 +57,15 @@ namespace ApplicationLogAnalyzer
             }
         }
 
+        private void UpdateColumn(List<LogItem> log)
+        {
+            dataGridView1.Rows.Clear();
+            foreach (LogItem item in log)
+            {
+                dataGridView1.Rows.Add(new object[3] { item.Level, item.DateTime, item.Message });
+            } 
+        }
+
         private void button2_Click(object sender, EventArgs e)
         {
             Logger.Initialize();
@@ -64,7 +75,28 @@ namespace ApplicationLogAnalyzer
 
         private void button3_Click(object sender, EventArgs e)
         {
-            Logger.Destruct("test.file");
+            Logger.Error("testesttetatessefse");
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+           
+        }
+
+        private void ConstraintControlChanged(object sender, EventArgs e)
+        {
+            LogLevel level = (LogLevel)1;
+            if (radioButton2.Checked)
+                level = LogLevel.Debug;
+            else if (radioButton3.Checked)
+                level = LogLevel.Info;
+            else if (radioButton4.Checked)
+                level = LogLevel.Success;
+            else if (radioButton5.Checked)
+                level = LogLevel.Warning;
+            else if (radioButton6.Checked)
+                level = LogLevel.Error;
+            UpdateColumn(Logger.SortLogItemsByLogLevel(dateTimePicker1.Value, dateTimePicker2.Value, level));
         }
     }
 }

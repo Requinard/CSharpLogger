@@ -9,18 +9,14 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApplicationLogAnalyzer", "A
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
-		BuildForm|Any CPU = BuildForm|Any CPU
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{7CCBB32F-47C7-4B89-806C-9C8E6C4E159F}.BuildForm|Any CPU.ActiveCfg = BuildForm|Any CPU
-		{7CCBB32F-47C7-4B89-806C-9C8E6C4E159F}.BuildForm|Any CPU.Build.0 = BuildForm|Any CPU
 		{7CCBB32F-47C7-4B89-806C-9C8E6C4E159F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7CCBB32F-47C7-4B89-806C-9C8E6C4E159F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7CCBB32F-47C7-4B89-806C-9C8E6C4E159F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7CCBB32F-47C7-4B89-806C-9C8E6C4E159F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{DBA0B670-5074-4563-848D-C6F1E9B05078}.BuildForm|Any CPU.ActiveCfg = BuildForm|Any CPU
-		{DBA0B670-5074-4563-848D-C6F1E9B05078}.BuildForm|Any CPU.Build.0 = BuildForm|Any CPU
 		{DBA0B670-5074-4563-848D-C6F1E9B05078}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{DBA0B670-5074-4563-848D-C6F1E9B05078}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DBA0B670-5074-4563-848D-C6F1E9B05078}.Release|Any CPU.ActiveCfg = Release|Any CPU
