@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 
@@ -19,6 +20,11 @@ namespace ApplicationLogger
         }
 
         public static event ItemAdded OnNewLogItem;
+        public static event ItemAdded OnDebugLog;
+        public static event ItemAdded OnInfoLog;
+        public static event ItemAdded OnSuccessLog;
+        public static event ItemAdded OnWarningLog;
+        public static event ItemAdded OnErrorLog;
 
         /// <summary>
         ///     Initializes a logger
@@ -49,47 +55,29 @@ namespace ApplicationLogger
         /// </summary>
         /// <param name="level">Level you want sorted</param>
         /// <returns>A list containing all items with the specified log level</returns>
-        public static List<LogItem> SortLogItemsByLogLevel(LogLevel level)
+        public static List<LogItem> SortLogItemsByLogLevel(DateTime startDate, DateTime? endDate = null, LogLevel level= (LogLevel)1)
         {
-            IOrderedEnumerable<LogItem> s = from logItem in log
-                where logItem.Level == level
-                orderby logItem.Time descending
-                select logItem;
+            if (endDate == null)
+                endDate = DateTime.MaxValue;
 
-            return s.ToList();
+            if ((int) level == 1)
+            {
+                var s = from logItem in log
+                    where logItem.DateTime > startDate && logItem.DateTime < endDate
+                    select logItem;
+
+                return s.ToList();
+            }
+            else
+            {
+               var s = from logItem in log
+                    where logItem.DateTime > startDate && logItem.DateTime < endDate && logItem.Level == level
+                    select logItem;
+
+                return s.ToList();
+            }
         }
-
-        public static List<LogItem> SortLogItemsFromDate(DateTime startDate)
-        {
-            IOrderedEnumerable<LogItem> s = from logItem in log
-                where logItem.Time > startDate
-                orderby logItem.Time
-                select logItem;
-
-            return s.ToList();
-        }
-
-        public static List<LogItem> SortLogItemsToDate(DateTime toDate)
-        {
-            IOrderedEnumerable<LogItem> s = from logItem in log
-                where logItem.Time < toDate
-                orderby logItem.Time descending
-                select logItem;
-
-            return s.ToList();
-        }
-
-        public static List<LogItem> SortLogItemsBetweenDate(DateTime startDate, DateTime endDate)
-        {
-            IOrderedEnumerable<LogItem> s = from logItem in log
-                where logItem.Time > startDate
-                where logItem.Time < endDate
-                orderby logItem.Time descending
-                select logItem;
-
-            return s.ToList();
-        }
-
+        
         /// <summary>
         ///     Writes log to hard drive
         /// </summary>
@@ -116,15 +104,17 @@ namespace ApplicationLogger
         /// </summary>
         /// <param name="logMessage">Message that needs to be logged</param>
         /// <param name="level">Severity of the message</param>
-        public static void LogMessage(string logMessage, LogLevel level)
+        public static LogItem LogMessage(string logMessage, LogLevel level)
         {
             var item = new LogItem(logMessage, level);
 
             log.Add(item);
 
             Console.WriteLine(item.ToString());
+            if(OnNewLogItem != null)
+                OnNewLogItem(item);
 
-            OnNewLogItem(item);
+            return item;
         }
 
         /// <summary>
@@ -133,7 +123,10 @@ namespace ApplicationLogger
         /// <param name="message">Message to be logged</param>
         public static void Info(string message)
         {
-            LogMessage(message, LogLevel.Info);
+            LogItem item = LogMessage(message, LogLevel.Info);
+
+            if (OnInfoLog != null)
+                OnInfoLog(item);
         }
 
         /// <summary>
@@ -142,7 +135,10 @@ namespace ApplicationLogger
         /// <param name="message">Message to be logged</param>
         public static void Debug(string message)
         {
-            LogMessage(message, LogLevel.Debug);
+            LogItem item = LogMessage(message, LogLevel.Debug);
+
+            if (OnDebugLog != null)
+                OnDebugLog(item);
         }
 
         /// <summary>
@@ -151,7 +147,10 @@ namespace ApplicationLogger
         /// <param name="message">Message to be logged</param>
         public static void Success(string message)
         {
-            LogMessage(message, LogLevel.Success);
+            LogItem item = LogMessage(message, LogLevel.Success);
+
+            if (OnSuccessLog != null)
+                OnSuccessLog(item);
         }
 
         /// <summary>
@@ -160,7 +159,10 @@ namespace ApplicationLogger
         /// <param name="message">Message to be logged</param>
         public static void Warning(string message)
         {
-            LogMessage(message, LogLevel.Warning);
+            LogItem item = LogMessage(message, LogLevel.Warning);
+
+            if (OnWarningLog != null)
+                OnWarningLog(item);
         }
 
         /// <summary>
@@ -169,7 +171,10 @@ namespace ApplicationLogger
         /// <param name="message">Message to be logged</param>
         public static void Error(string message)
         {
-            LogMessage(message, LogLevel.Error);
+            LogItem item = LogMessage(message, LogLevel.Error);
+
+            if (OnErrorLog != null)
+                OnErrorLog(item);
         }
     }
 
@@ -188,7 +193,7 @@ namespace ApplicationLogger
     {
         private readonly LogLevel level;
         private readonly string message;
-        private readonly DateTime time;
+        private readonly DateTime dateTime;
 
         /// <summary>
         ///     Initializes a log item
@@ -197,14 +202,14 @@ namespace ApplicationLogger
         /// <param name="level">Severity of the message</param>
         public LogItem(string message, LogLevel level)
         {
-            time = DateTime.Now;
+            dateTime = DateTime.Now;
             this.message = message;
             this.level = level;
         }
 
-        public DateTime Time
+        public DateTime DateTime
         {
-            get { return time; }
+            get { return dateTime; }
         }
 
         public string Message
@@ -225,7 +230,7 @@ namespace ApplicationLogger
         {
             const string LogString = "[{0}] {1}: {2}";
 
-            return String.Format(LogString, level, Time, Message);
+            return String.Format(LogString, level, DateTime, Message);
         }
     }
 }

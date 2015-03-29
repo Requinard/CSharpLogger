@@ -51,7 +51,7 @@ namespace ApplicationLogAnalyzer
             dataGridView1.Rows.Clear();
             foreach (LogItem item in Logger.Log)
             {
-                dataGridView1.Rows.Add(new object[3] {item.Level, item.Time, item.Message});
+                dataGridView1.Rows.Add(new object[3] {item.Level, item.DateTime, item.Message});
             }
         }
 
