@@ -22,7 +22,7 @@
     <UpdatePeriodically>false</UpdatePeriodically>
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
-    <ApplicationRevision>3</ApplicationRevision>
+    <ApplicationRevision>4</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -84,10 +84,19 @@
     <Compile Include="AnalyzerForm.Designer.cs">
       <DependentUpon>AnalyzerForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="LogItemForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="LogItemForm.Designer.cs">
+      <DependentUpon>LogItemForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="AnalyzerForm.resx">
       <DependentUpon>AnalyzerForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="LogItemForm.resx">
+      <DependentUpon>LogItemForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

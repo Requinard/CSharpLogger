@@ -106,6 +106,11 @@ namespace ApplicationLogAnalyzer
 
         private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
+            string message = dataGridView1.Rows[e.RowIndex].Cells[2].Value.ToString();
+            
+            LogItemForm form =  new LogItemForm(message);
+
+            form.Show();
         }
     }
 }
