@@ -75,6 +75,7 @@
             this.Level,
             this.Message,
             this.DateTime});
+            this.dataGridView1.Enabled = false;
             this.dataGridView1.ImeMode = System.Windows.Forms.ImeMode.NoControl;
             this.dataGridView1.Location = new System.Drawing.Point(218, 1);
             this.dataGridView1.Name = "dataGridView1";
@@ -107,6 +108,7 @@
             // 
             // dpStart
             // 
+            this.dpStart.Enabled = false;
             this.dpStart.Location = new System.Drawing.Point(12, 63);
             this.dpStart.Name = "dpStart";
             this.dpStart.Size = new System.Drawing.Size(200, 20);
@@ -116,6 +118,7 @@
             // 
             // dpEnd
             // 
+            this.dpEnd.Enabled = false;
             this.dpEnd.Location = new System.Drawing.Point(12, 102);
             this.dpEnd.Name = "dpEnd";
             this.dpEnd.Size = new System.Drawing.Size(200, 20);
@@ -124,6 +127,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
+            this.label1.Enabled = false;
             this.label1.Location = new System.Drawing.Point(13, 44);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(55, 13);
@@ -133,6 +137,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
+            this.label2.Enabled = false;
             this.label2.Location = new System.Drawing.Point(12, 86);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(52, 13);
@@ -147,6 +152,7 @@
             this.gbSeverity.Controls.Add(this.rbInfo);
             this.gbSeverity.Controls.Add(this.rbDebug);
             this.gbSeverity.Controls.Add(this.rbAll);
+            this.gbSeverity.Enabled = false;
             this.gbSeverity.Location = new System.Drawing.Point(12, 128);
             this.gbSeverity.Name = "gbSeverity";
             this.gbSeverity.Size = new System.Drawing.Size(200, 171);
