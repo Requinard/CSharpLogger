@@ -46,6 +46,16 @@ namespace ApplicationLogAnalyzer
             {
                 Logger.Initialize(openLogFileDialog.FileName);
                 UpdateColumn();
+                
+                //enables the form if the initializing of the logfile was succesfull.
+                label1.Enabled = true;
+                label2.Enabled = true;
+                dpStart.Enabled = true;
+                dpEnd.Enabled = true;
+                dataGridView1.Enabled = true;
+                gbSeverity.Enabled = true;
+
+
             }
             catch (SerializationException exception)
             {
